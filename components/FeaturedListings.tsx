@@ -133,7 +133,7 @@ const FeaturedListings: React.FC = () => {
   });
 
   return (
-    <section id="featured" className="py-20 px-6 bg-slate-50">
+    <section id="featured" className="py-20 px-6 bg-white">
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 space-y-6 md:space-y-0">
           <div className="md:w-1/2">
