@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import FeaturedListings from './components/FeaturedListings';
@@ -13,11 +13,20 @@ import SplashScreen from './components/SplashScreen';
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
+  // Failsafe: Ensure loading state is turned off after 4 seconds max
+  // This prevents the white screen from staying if the SplashScreen component fails to callback
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <>
       {isLoading && <SplashScreen onFinish={() => setIsLoading(false)} />}
       
-      <div className={`min-h-screen bg-slate-50 text-slate-800 relative transition-opacity duration-700 ${isLoading ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'}`}>
+      <div className="min-h-screen bg-slate-50 text-slate-800 relative">
         <Navbar />
         <Hero />
         <FeaturedListings />
