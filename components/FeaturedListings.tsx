@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropertyCard from './PropertyCard';
 import { Property } from '../types';
-import { ArrowUpDown } from 'lucide-react';
+import { ArrowUpDown, ArrowRight } from 'lucide-react';
 
 const MOCK_PROPERTIES: Property[] = [
   {
@@ -20,7 +20,7 @@ const MOCK_PROPERTIES: Property[] = [
   },
   {
     id: 2,
-    title: 'Premium Corner Plot',
+    title: 'Premium Corner Plot facing Park',
     location: 'Bahria Town Lahore',
     phase: 'Sector C',
     price: '2.8 Crore',
@@ -32,7 +32,7 @@ const MOCK_PROPERTIES: Property[] = [
   },
   {
     id: 3,
-    title: 'Modern Designer House',
+    title: 'Modern Designer House by A+ Architect',
     location: 'DHA Lahore',
     phase: 'Phase 8',
     price: '12.2 Crore',
@@ -133,29 +133,41 @@ const FeaturedListings: React.FC = () => {
   });
 
   return (
-    <section id="featured" className="py-20 px-6 bg-white">
-      <div className="container mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 space-y-6 md:space-y-0">
-          <div className="md:w-1/2">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary-900 mb-4">
-              Premium Listings
+    <section id="featured" className="py-28 bg-surface-50">
+      <div className="container mx-auto px-6">
+        
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-gray-200 pb-8">
+          <div className="max-w-2xl">
+            <span className="text-accent-600 font-bold tracking-widest text-xs uppercase mb-2 block">Premium Portfolio</span>
+            <h2 className="text-4xl md:text-5xl font-serif text-primary-900 mb-6">
+              Exclusive Listings
             </h2>
-            <p className="text-gray-600 max-w-xl">
-              Curated selection of the finest properties in DHA and Bahria Town. Verified documents, transparent pricing.
+            <p className="text-gray-500 font-light leading-relaxed text-lg">
+              A curated selection of the finest properties in DHA and Bahria Town. 
+              Each listing represents a unique investment opportunity, rigorously verified for your peace of mind.
             </p>
           </div>
           
-          <div className="flex flex-col md:items-end space-y-4 md:w-1/2">
-            {/* Filter Buttons */}
-            <div className="flex flex-wrap gap-2">
+          <div className="flex flex-col items-end mt-8 md:mt-0">
+             <button className="group flex items-center text-primary-900 font-medium border-b border-primary-900 pb-1 hover:text-accent-600 hover:border-accent-600 transition-all">
+                <span>View Entire Collection</span>
+                <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+             </button>
+          </div>
+        </div>
+
+        {/* Filters */}
+        <div className="flex flex-col md:flex-row justify-between items-center mb-10 space-y-4 md:space-y-0">
+            <div className="flex flex-wrap justify-center gap-2">
                {['All', 'DHA', 'Bahria', 'Houses', 'Plots'].map((f) => (
                   <button
                     key={f}
                     onClick={() => setFilter(f as any)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    className={`px-6 py-2 text-sm uppercase tracking-wider font-medium transition-all ${
                       filter === f 
-                      ? 'bg-primary-900 text-white shadow-md' 
-                      : 'bg-white text-gray-600 border border-gray-200 hover:border-primary-900'
+                      ? 'bg-primary-900 text-white shadow-lg' 
+                      : 'bg-white text-gray-400 hover:text-primary-900'
                     }`}
                   >
                     {f}
@@ -163,44 +175,38 @@ const FeaturedListings: React.FC = () => {
                ))}
             </div>
 
-            {/* Sort Dropdown */}
-            <div className="flex items-center space-x-2">
-              <span className="text-sm font-medium text-gray-500 flex items-center">
-                <ArrowUpDown className="h-4 w-4 mr-1" /> Sort by:
-              </span>
+            <div className="relative">
               <select 
                 value={sortOption}
                 onChange={(e) => setSortOption(e.target.value)}
-                className="bg-white border border-gray-300 text-gray-700 text-sm rounded-md focus:ring-primary-900 focus:border-primary-900 block p-2 outline-none cursor-pointer"
+                className="appearance-none bg-transparent pl-4 pr-8 py-2 text-sm font-medium text-gray-600 border-none focus:ring-0 cursor-pointer"
               >
-                <option value="newest">Newest Listings</option>
+                <option value="newest">Newest Arrivals</option>
                 <option value="price-asc">Price: Low to High</option>
                 <option value="price-desc">Price: High to Low</option>
-                <option value="size-asc">Size: Small to Large</option>
-                <option value="size-desc">Size: Large to Small</option>
               </select>
+              <ArrowUpDown className="absolute right-0 top-1/2 -translate-y-1/2 h-3 w-3 text-gray-400 pointer-events-none" />
             </div>
-          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
           {sortedProperties.map(property => (
             <PropertyCard key={property.id} property={property} />
           ))}
         </div>
 
         {sortedProperties.length === 0 && (
-          <div className="text-center py-20 text-gray-500">
-            No properties found matching your criteria.
+          <div className="text-center py-20 bg-white border border-dashed border-gray-200 rounded-lg">
+            <p className="text-gray-400 font-serif text-xl">No exclusive properties match these specific criteria.</p>
+            <button 
+              onClick={() => setFilter('All')}
+              className="mt-4 text-accent-600 hover:underline"
+            >
+              Clear Filters
+            </button>
           </div>
         )}
-
-        <div className="mt-12 text-center">
-            <button className="inline-flex items-center space-x-2 text-primary-900 font-bold border-b-2 border-accent-500 pb-1 hover:text-accent-600 transition-colors">
-                <span>View All Properties</span>
-                <span className="text-xl">→</span>
-            </button>
-        </div>
       </div>
     </section>
   );
